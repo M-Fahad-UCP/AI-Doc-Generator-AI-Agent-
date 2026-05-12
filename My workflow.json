@@ -1,0 +1,157 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-docs",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -256,
+        0
+      ],
+      "id": "9a0a11b1-28a5-4d68-96a4-80a58093c224",
+      "name": "Webhook",
+      "webhookId": "1b347603-f353-4cfd-b8cf-136c180e8ffa"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "614702c7-214c-40c7-80ef-9c676aac22e9",
+              "name": "fileContent",
+              "value": "={{ $binary.data.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "73b04b1e-482a-44c3-98b5-1e9fc618dbe2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate full API documentation for this code:\n\n{{ $json.fileContent }}\n\nInclude:\n- Overview of what the code does\n- All functions and methods\n- Parameters with their types\n- Return values\n- Usage examples",
+        "options": {
+          "systemMessage": "You are an expert technical writer. Generate clean \nprofessional markdown API documentation from code. \nBe thorough, clear and developer-friendly."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        192,
+        0
+      ],
+      "id": "11f59cd1-8ed3-4ccc-8300-0e91d66a7fa0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        80,
+        288
+      ],
+      "id": "1c35aa3c-2d62-47f6-b206-35e56ec6a938",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "xQvOFvAoAGNv3TxB",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        544,
+        0
+      ],
+      "id": "ff546344-527c-4605-be4d-f249a560b104",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b08a2ff1-41af-4c30-9897-133ab5b15eb8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c91401c56758f4017c954a953e422f43e59572bf884dc9fdaf07dadffe48a6a4"
+  },
+  "id": "mVb3GAJGwIOYwh0b",
+  "tags": []
+}
