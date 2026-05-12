@@ -1,187 +1,181 @@
-# 🤖 AI Doc Generator
+# 🤖 AI Research Summarizer
 
-> Automatically generate professional API documentation from any code file using AI — powered by n8n + Groq.
+> Type any topic → Get a professional research document instantly.
+> Powered by **n8n + Groq AI + Google Drive**
 
----
-
-## 📌 Overview
-
-This tool sends your code file to an AI-powered n8n workflow and returns clean, structured API documentation in Markdown format.
-
-### 🔄 How It Works
-
-```text
-Your Code File
-      ↓
-PowerShell / Python Script
-      ↓
-n8n Webhook (POST request)
-      ↓
-AI Agent (Groq LLM)
-      ↓
-output.md — Generated Documentation
-```
+Built by **Fahad Azhar** 🇵🇰
 
 ---
 
-## 🚀 Quick Start
+## ⚡ What It Does
 
-### ✅ Prerequisites
+Send any topic → AI generates a complete HTML research page with:
+- Overview
+- Key Points
+- Real-World Example
+- Study Further
+- Summary
 
-- Windows (PowerShell) **or** Python 3.x installed
-- Internet connection
-- A code file you want to document (`.js`, `.py`, `.ts`, etc.)
-
----
-
-## 📂 Project Structure
-
-```bash
-ai-doc-generator/
-├── workflow.json         # n8n workflow (import this into your n8n instance)
-├── generate-docs.ps1     # PowerShell script (Windows)
-├── generate_docs.py      # Python script (Windows/Mac/Linux)
-├── .env.example          # Environment variable template
-├── .gitignore            # Git ignore rules
-└── README.md             # Project documentation
-```
+The output opens in your browser automatically and saves to Google Drive.
 
 ---
 
-## ⚙️ Setup
+## 🔗 Webhook URL
 
-### 1️⃣ Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/ai-doc-generator.git
-cd ai-doc-generator
 ```
-
----
-
-### 2️⃣ Configure the Webhook URL
-
-Copy the example environment file:
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env` and add your webhook URL:
-
-```env
-WEBHOOK_URL=https://fahad012.app.n8n.cloud/webhook/generate-docs
-```
-
-> ⚠️ Never commit your `.env` file to GitHub.  
-> It is already included in `.gitignore`.
-
----
-
-## 🖥️ Usage
-
-### Option 1 — PowerShell (Windows)
-
-Run the script and pass your file path:
-
-```powershell
-.\generate-docs.ps1 -FilePath "C:\path\to\yourfile.js"
-```
-
-#### Example
-
-```powershell
-.\generate-docs.ps1 -FilePath "$env:USERPROFILE\Desktop\app.js"
-```
-
-📄 Output will be saved as `yourfile.md` in the same folder as the input file.
-
----
-
-### Option 2 — Python (Windows / Mac / Linux)
-
-#### Install Required Library
-
-```bash
-pip install requests
-```
-
-#### Run the Script
-
-```bash
-python generate_docs.py path/to/yourfile.js
-```
-
-#### Example
-
-```bash
-python generate_docs.py ./src/utils.py
-```
-
-📄 Output will be saved as `yourfile.md` in the same folder.
-
----
-
-### Option 3 — cURL (Terminal)
-
-```bash
-curl -X POST https://fahad012.app.n8n.cloud/webhook/generate-docs \
-  -H "Content-Type: application/json" \
-  -d "{\"fileContent\": \"$(cat yourfile.js)\"}"
-```
-
----
-
-### Option 4 — Postman (GUI)
-
-1. Open Postman  
-2. Set method to **POST**  
-3. URL:
-
-```text
 https://fahad012.app.n8n.cloud/webhook/generate-docs
 ```
 
-4. Go to:
-
-```text
-Body → raw → JSON
-```
-
-5. Paste:
-
-```json
-{
-  "fileContent": "your code here"
-}
-```
-
-6. Click **Send**
+> ⚠️ Make sure workflow is **Published** (green dot) in n8n before running.
 
 ---
 
-## 📄 Example Output
+## 🚀 How to Run
 
-### Input
+### Step 1 — Open PowerShell
+Press `Windows + R` → type `powershell` → press Enter
 
-A JavaScript utility file
+### Step 2 — Copy and Paste This Script
+```powershell
+$uri = "https://fahad012.app.n8n.cloud/webhook/generate-docs"
+$body = '{"topic": "YOUR TOPIC HERE"}'
+$response = Invoke-RestMethod -Uri $uri -Method POST -Body $body -ContentType "application/json"
+$response.output | Out-File "$env:USERPROFILE\Desktop\output.html" -Encoding UTF8
+Start-Process "$env:USERPROFILE\Desktop\output.html"
+```
 
-### Output (`output.md`)
+### Step 3 — Replace `YOUR TOPIC HERE` with any topic
+```powershell
+$body = '{"topic": "what is machine learning"}'
+```
 
-````markdown
-# API Documentation
+### Step 4 — Press Enter
+Browser opens automatically with your research! ✅
 
-## Overview
-...
+---
 
-## Functions
+## 💡 Topic Ideas
 
-### greet(name)
+Just replace the topic text — you can research **anything!**
 
-**Description:** Returns a greeting string.
+### 🖥️ Computer Science
+```powershell
+$body = '{"topic": "what is data science"}'
+$body = '{"topic": "what is cybersecurity"}'
+$body = '{"topic": "what is blockchain technology"}'
+$body = '{"topic": "how to learn Python programming"}'
+$body = '{"topic": "what is object oriented programming"}'
+$body = '{"topic": "how does a web browser work"}'
+$body = '{"topic": "what is API development"}'
+$body = '{"topic": "what is artificial intelligence"}'
+$body = '{"topic": "what is cloud computing"}'
+```
 
-**Parameters:**
-- `name` (string): The name to greet
+### 🇵🇰 Pakistan & Freelancing
+```powershell
+$body = '{"topic": "how to start freelancing in Pakistan"}'
+$body = '{"topic": "best freelancing platforms for Pakistanis"}'
+$body = '{"topic": "how to earn dollars from Pakistan"}'
+$body = '{"topic": "top IT skills in demand in Pakistan 2026"}'
+$body = '{"topic": "how to create Fiverr profile in Pakistan"}'
+$body = '{"topic": "how to get first client on Upwork in Pakistan"}'
+```
 
-**Returns:** string
-...
+### 📚 University Subjects
+```powershell
+$body = '{"topic": "what is operating system"}'
+$body = '{"topic": "what is data structures and algorithms"}'
+$body = '{"topic": "how does computer networking work"}'
+$body = '{"topic": "what is software engineering"}'
+$body = '{"topic": "what is database management system"}'
+$body = '{"topic": "what is computer architecture"}'
+$body = '{"topic": "what is discrete mathematics"}'
+```
+
+### 🌍 General Knowledge
+```powershell
+$body = '{"topic": "how does the stock market work"}'
+$body = '{"topic": "what is cryptocurrency"}'
+$body = '{"topic": "how does 5G technology work"}'
+$body = '{"topic": "how does ChatGPT work"}'
+$body = '{"topic": "what is quantum computing"}'
+```
+
+---
+
+## ⚡ Quick One-Liner
+
+Copy this entire line, replace `YOUR TOPIC HERE` and run:
+
+```powershell
+$uri = "https://fahad012.app.n8n.cloud/webhook/generate-docs"; $body = '{"topic": "YOUR TOPIC HERE"}'; $r = Invoke-RestMethod -Uri $uri -Method POST -Body $body -ContentType "application/json"; $r.output | Out-File "$env:USERPROFILE\Desktop\output.html" -Encoding UTF8; Start-Process "$env:USERPROFILE\Desktop\output.html"
+```
+
+---
+
+## 📁 Output
+
+```
+✅ Browser opens automatically with professional HTML page
+✅ File saved to Desktop as output.html
+✅ File uploaded to Google Drive automatically
+```
+
+---
+
+## 🔄 How It Works
+
+```
+PowerShell
+    ↓ POST {"topic": "..."}
+Webhook Node
+    ↓
+AI Agent (Groq)
+generates HTML research
+    ↓
+Code in JavaScript
+converts to HTML file
+    ↓
+Google Drive
+saves .html file
+    ↓
+Respond to Webhook
+returns HTML to you
+    ↓
+output.html opens in browser
+```
+
+---
+
+## ❓ Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Empty output file | Use `$response.output` not `$response` |
+| Webhook not detecting | Make sure workflow is **Published** in n8n |
+| Browser shows blank page | Check n8n execution logs for errors |
+| Google Drive not saving | Check Google Drive credentials in n8n |
+
+---
+
+## 📜 Files Included
+
+| File | Description |
+|---|---|
+| `workflow.json` | Import into n8n to set up the workflow |
+| `generate-research.ps1` | PowerShell script |
+| `README.md` | This file |
+
+---
+
+## 📜 License
+
+MIT — free to use, modify, and share.
+
+---
+
+## 👨‍💻 Author
+
+**Fahad Azhar** — Pakistan 🇵🇰
+
+> ⭐ If this helped you, give it a star on GitHub!
